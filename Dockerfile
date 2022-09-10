@@ -26,6 +26,8 @@ RUN curl -o miniconda3.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir mkl && \
+    python3 -m pip install --upgrade setuptools && \
+    python3 -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \
     python3 -m pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
 
 RUN git clone https://github.com/NVIDIA/apex
@@ -34,6 +36,6 @@ RUN cd apex && \
     python3 -m pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
 
 COPY ./requirements.txt .
-RUN python3 -m pip install -r ./requirements.txt
+RUN python3 -m pip install --no-cache-dir  --force-reinstall -Iv -r ./requirements.txt
 
 CMD ["/bin/bash"]
